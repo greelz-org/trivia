@@ -1,0 +1,66 @@
+$topPadding: 30;
+$bottomPadding: 80;
+$playerListHeight: 40;
+
+.top {
+  height: calc(50% - #{$topPadding * 2}px - #{$playerListHeight / 2}px);
+  padding: #{$topPadding}px;
+}
+
+.number {
+  height: 60px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 30px;
+}
+
+.question {
+  height: calc(100% - 60px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  overflow: auto;
+  word-break: break-word;
+  color: white;
+}
+
+.buzzContainer {
+  height: 100%;
+  color: white;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.buzzable {
+  background-color: aquamarine;
+}
+
+.bottom {
+  padding: #{$bottomPadding}px;
+  height: calc(50% - #{$bottomPadding * 2}px - #{$playerListHeight / 2}px);
+}
+
+.center {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  font-size: 100px;
+  text-align: center;
+  color: white;
+}
+
+.questionAnswer {
+  height: calc(100% - #{$playerListHeight}px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 40px;
+}

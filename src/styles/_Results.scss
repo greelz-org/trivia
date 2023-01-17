@@ -1,0 +1,21 @@
+.tableContainer {
+    padding-top: 80px;
+}
+
+#resultTable {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+  text-align: center;
+
+  td {
+    width: 33%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+.result {
+  max-width: 50%;
+  width: 400px;
+}

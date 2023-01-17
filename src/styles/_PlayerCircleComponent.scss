@@ -1,0 +1,15 @@
+.playerCircleDiv {
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 0 10px black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, .5);
+    color: white;
+}
+
+.highlight { 
+    background-color: green;
+}

@@ -1,0 +1,303 @@
+html {
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  text-shadow: 0.07em 0 black, 0 0.07em black, -0.07em 0 black, 0 -0.07em black;
+}
+
+body,
+html,
+#root {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  background: url("https://th.bing.com/th/id/R.804ae154ec944f0c6adf75d053e1e4f5?rik=pOCnx%2b7lqMU6dQ&riu=http%3a%2f%2fgetwallpapers.com%2fwallpaper%2ffull%2fc%2f5%2f5%2f1113372-gorgerous-cool-space-background-wallpapers-2880x1800-phone.jpg&ehk=iDdv1rf0FUnRBLeVQoCHTnbDKWpmK%2faURtu2WkTJt0E%3d&risl=&pid=ImgRaw&r=0");
+  background-size: cover;
+}
+
+#root {
+  height: 100%;
+  background-color: black;
+}
+
+input[type=text] {
+  -ms-writing-mode: lr-tb !important;
+      writing-mode: horizontal-tb !important;
+  text-rendering: auto;
+  color: fieldtext;
+  letter-spacing: normal;
+  word-spacing: normal;
+  line-height: normal;
+  text-transform: none;
+  text-indent: 0px;
+  text-shadow: none;
+  display: inline-block;
+  text-align: start;
+  -webkit-appearance: auto;
+     -moz-appearance: auto;
+          appearance: auto;
+  -webkit-rtl-ordering: logical;
+  cursor: text;
+  background-color: field;
+  margin: 0em;
+  padding: 1px 2px;
+  border-width: 2px;
+  border-style: inset;
+  border-color: -internal-light-dark(rgb(118, 118, 118), rgb(133, 133, 133));
+  -o-border-image: initial;
+     border-image: initial;
+}
+
+.container {
+  height: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-content: space-between;
+}
+.container > * {
+  display: flex;
+  align-items: center;
+}
+
+button {
+  border-radius: 1000px;
+  background-color: #0077ed;
+  color: white;
+  padding: 1em 2em;
+  min-width: 40px;
+  -webkit-appearance: auto;
+     -moz-appearance: auto;
+          appearance: auto;
+  -ms-writing-mode: lr-tb !important;
+      writing-mode: horizontal-tb !important;
+  text-rendering: auto;
+  letter-spacing: normal;
+  word-spacing: normal;
+  line-height: normal;
+  text-transform: none;
+  text-indent: 0px;
+  text-shadow: none;
+  display: inline-block;
+  text-align: center;
+  align-items: flex-start;
+  cursor: default;
+  box-sizing: border-box;
+  margin: 0em;
+  border: none;
+}
+
+.topTextContainer {
+  flex: 0 1 25%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  text-align: center;
+}
+
+.actionsContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.actionsContainer .nameEntry {
+  flex: 0 0 15%;
+  text-align: center;
+  min-height: 60px;
+}
+.actionsContainer .nameEntry input {
+  font-size: xx-large;
+  width: calc(100% - 20px);
+  text-align: center;
+  background-color: transparent;
+  color: white;
+}
+@media (max-height: 300px) {
+  .actionsContainer .buttonsContainer {
+    flex-direction: row;
+  }
+}
+.actionsContainer .buttonsContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  text-align: center;
+}
+.actionsContainer .buttonsContainer .buttonTextDiv span {
+  font-size: smaller;
+  display: block;
+}
+.actionsContainer .titleTextGoDiv {
+  flex: 1;
+}
+.actionsContainer .titleTextGoDiv :last-child() {
+  display: inline-block;
+}
+.actionsContainer .buttonTextDiv {
+  flex: 1;
+  flex-direction: column;
+  justify-content: center;
+}
+.actionsContainer .buttonTextDiv button {
+  margin-bottom: 10px;
+}
+.actionsContainer .buttonTextDiv span {
+  font-size: smaller;
+}
+
+.bigButton {
+  font-size: x-large;
+}
+
+.top {
+  height: calc(50% - 60px - 20px);
+  padding: 30px;
+}
+
+.number {
+  height: 60px;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  font-size: 30px;
+}
+
+.question {
+  height: calc(100% - 60px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  overflow: auto;
+  word-break: break-word;
+  color: white;
+}
+
+.buzzContainer {
+  height: 100%;
+  color: white;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.buzzable {
+  background-color: aquamarine;
+}
+
+.bottom {
+  padding: 80px;
+  height: calc(50% - 160px - 20px);
+}
+
+.center {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  font-size: 100px;
+  text-align: center;
+  color: white;
+}
+
+.questionAnswer {
+  height: calc(100% - 40px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 40px;
+}
+
+.gameIdDiv {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.gameIdDiv .buttons {
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+}
+
+.playerList {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.playerList .startButtonDiv {
+  flex: 1 1 30%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.playerList .playersTable {
+  width: 90%;
+  max-width: 450px;
+  flex: 1 1 70%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+}
+.playerList .player {
+  border: 1px solid white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.tableContainer {
+  padding-top: 80px;
+}
+
+#resultTable {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+  text-align: center;
+}
+#resultTable td {
+  width: 33%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.result {
+  max-width: 50%;
+  width: 400px;
+}
+
+.playerCircleDiv {
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  border: 2px solid white;
+  box-shadow: 0 0 10px black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+}
+
+.highlight {
+  background-color: green;
+}
+
+.inGamePlayersListDiv {
+  height: 40px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}/*# sourceMappingURL=App.css.map */
