@@ -3,7 +3,6 @@ import { getDatabase } from 'firebase/database';
 import { initializeApp } from "firebase/app";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyA-dfwxWi9tF9DTzcVZjpA-Ci6sy5CX7LQ",
   authDomain: "trivia-c9a1d.firebaseapp.com",
   databaseURL: "https://trivia-c9a1d-default-rtdb.firebaseio.com",
   projectId: "trivia-c9a1d",
