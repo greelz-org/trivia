@@ -9,6 +9,7 @@ interface BuzzComponentProps {
 export default function BuzzComponent(props: BuzzComponentProps) {
   const [timeoutLocks, setTimeoutLocks] = useState(0);
   const lockedOut = timeoutLocks > 0;
+  const actuallyCanBuzz = props.canBuzzIn && !lockedOut;
 
   const clickHandler = (e: React.MouseEvent<HTMLDivElement>) => {
     if (props.canBuzzIn && !lockedOut) {
@@ -26,12 +27,11 @@ export default function BuzzComponent(props: BuzzComponentProps) {
 
   return (
     <>
-      <div className={`bottom ${props.canBuzzIn ? "buzzable" : ""}`}>
-        <DivWithFilledText
-          onClick={(e) => clickHandler(e)}
-          className={`buzzContainer`}
-          text="Buzz in!"
-        />
+      <div
+        className={`bottom ${actuallyCanBuzz ? "buzzable" : "notBuzzable"}`}
+        onClick={(e) => clickHandler(e)}
+      >
+        <DivWithFilledText className={`buzzContainer`} text="Buzz in!" />
       </div>
     </>
   );

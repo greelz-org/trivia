@@ -49,6 +49,7 @@ export default function HomePage({
     };
 
     const newGameCode = generateStr(4);
+    // Todo: validate that this string doesn't yet exist in games/gameIds
     const pushGamesRef = await push(ref(database, "games/gameIds"));
     await set(pushGamesRef, { gameId: newGameCode });
     onCreateNewGame({ gameRefId: pushGamesRef.key!, gameId: newGameCode });

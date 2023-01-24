@@ -2,6 +2,7 @@ import { ref, set } from "firebase/database";
 import { useObject } from "react-firebase-hooks/database";
 import MistakeComponent from "../Components/MistakeComponent";
 import { database } from "../Hooks/FirebaseApp";
+import Host from "./Host";
 import InGame from "./InGame";
 import Lobby from "./Lobby";
 import Results from "./Results";
@@ -16,6 +17,8 @@ export default function Game(props: GameProps) {
     ref(database, `games/${props.gameId}`)
   );
 
+  const isHost = game?.child("gameState/host").val() === props.name;
+
   async function startGame() {
     // Set up the game information
     // Right now, everything under gameState
@@ -27,7 +30,7 @@ export default function Game(props: GameProps) {
       gameStatus: "showQuestion",
       host: props.name,
       numQ: 1,
-      questions: questions
+      questions: questions,
     };
 
     set(r, newGameState);
@@ -45,7 +48,9 @@ export default function Game(props: GameProps) {
         name={props.name}
       />
     ),
-    ingame: (
+    ingame: isHost ? (
+      <Host gameId={props.gameId} gameData={game} name={props.name} />
+    ) : (
       <InGame gameId={props.gameId} gameData={game} playerName={props.name} />
     ),
     gameover: <Results results={[]} />,
@@ -65,7 +70,8 @@ export interface IQuestion {
 }
 
 async function getQuestions(numQuestions: number): Promise<IQuestion[] | null> {
-  const token = "7b5de1f4ae137e3796c9afbc6a64d5a6d09e208184a5da7ab620ca613f4a308c";
+  const token =
+    "7b5de1f4ae137e3796c9afbc6a64d5a6d09e208184a5da7ab620ca613f4a308c";
   const questionFetch = await fetch(
     `https://opentdb.com/api.php?amount=10&category=9&difficulty=easy&type=multiple&token=${token}`
   );

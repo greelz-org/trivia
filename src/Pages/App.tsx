@@ -7,8 +7,8 @@ import { database } from "../Hooks/FirebaseApp";
 
 
 function App() {
-  const [gameId, setGameId] = useState("YCOV");
-  const [name, setName] = useState("testing");
+  const [gameId, setGameId] = useState("");
+  const [name, setName] = useState("");
 
   const addUserToGame = async (gameId: string) => {
     console.log("adding a user to a game...")

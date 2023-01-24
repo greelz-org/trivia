@@ -41,6 +41,10 @@ $playerListHeight: 40;
   background-color: aquamarine;
 }
 
+.notBuzzable {
+  background-color: rgba(10, 10, 10, .3);
+}
+
 .bottom {
   padding: #{$bottomPadding}px;
   height: calc(50% - #{$bottomPadding * 2}px - #{$playerListHeight / 2}px);
