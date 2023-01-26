@@ -7,7 +7,7 @@ import {
   useState,
 } from "react";
 import Button from "../Components/ButtonComponent";
-import { getPlayers } from "./Lobby";
+import { getList } from "./Lobby";
 
 interface IHostProps {
   gameData: DataSnapshot | undefined;
@@ -63,28 +63,56 @@ function formatTimeDiff(t1?: number, t2?: number): string {
 }
 
 async function setAnswering(
-  ref1?: DatabaseReference,
-  ref2?: DatabaseReference,
+  gameState: DataSnapshot | undefined,
   pers?: string
 ) {
-  console.log(ref1);
-  console.log(ref2);
-  console.log(pers);
-  if (!ref1 || !ref2 || !pers) return;
-  await set(ref1, pers);
-  set(ref2, "answering");
+  if (!gameState) return;
+  if (pers == null) return;
+
+  const ansPRef = gameState.child("ansP").ref;
+  const gameStatusRef = gameState.child("gameStatus").ref;
+  const hasBuzzedInRef = gameState.child(`hasBuzzedIn/${pers}`).ref;
+
+  set(ansPRef, pers);
+  set(gameStatusRef, "answering");
+  set(hasBuzzedInRef, "");
 }
 
 export default function Host(props: IHostProps) {
-  const players = getPlayers(props.gameData);
+  const players = getList(props.gameData, "players");
   const gameState = props.gameData?.child("gameState");
   const buzzData = gameState?.child("buzzers");
   const buzzStateValues = useMemo(() => calcBuzzerState(buzzData), [buzzData]);
   const buzzersEnabled = gameState?.child("buzzersEnabled").val() === "Y";
+  const answerer = gameState?.child("ansP").val();
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState("");
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const [pendingBuzzCheck, setPendingBuzzCheck] = useState(false);
+
+  const shouldPickBuzzer =
+    answerer == null &&
+    buzzStateValues != null &&
+    buzzStateValues.buzzResults.length > 0;
+
+  if (shouldPickBuzzer && !pendingBuzzCheck) {
+    setPendingBuzzCheck(true);
+    setTimeout(() => {
+      if (gameState) {
+        setAnswering(gameState, buzzStateValues.buzzResults[0].name);
+      }
+      setPendingBuzzCheck(false);
+    }, 500);
+  }
+
+  const toggleBuzzers = useCallback(
+    (toOn: boolean) => {
+      if (!gameState) return;
+      set(gameState.child("buzzersEnabled").ref, toOn ? "Y" : "N");
+    },
+    [gameState]
+  );
+
   const changeGameState = useCallback(
     async (state: "showQuestion" | "showAnswer" | "answering") => {
       if (!gameState) return;
@@ -95,8 +123,11 @@ export default function Host(props: IHostProps) {
         isValid = question != null && question.length > 0;
         if (isValid) {
           // set the question status
-          await set(gameState.child("buzzers").ref, "");
-          await set(gameState.child("question").ref, question);
+          toggleBuzzers(false);
+          set(gameState.child("question").ref, question);
+          set(gameState.child("buzzers").ref, null);
+          set(gameState.child("hasBuzzedIn").ref, null);
+          set(gameState.child("ansP").ref, null);
         }
       } else if (state === "showAnswer") {
         // Validate there's a question in the box to show
@@ -109,16 +140,17 @@ export default function Host(props: IHostProps) {
         set(gameState.child("gameStatus").ref, state);
       }
     },
-    [gameState, answer, question]
+    [gameState, answer, question, toggleBuzzers]
   );
 
-  const toggleBuzzers = useCallback(
-    (toOn: boolean) => {
-      if (!gameState) return;
-      set(gameState.child("buzzersEnabled").ref, toOn ? "Y" : "N");
-    },
-    [gameState]
-  );
+  const allowNewBuzzes = () => {
+    if (!gameState) return;
+    toggleBuzzers(false);
+    set(gameState.child("question").ref, question);
+    set(gameState.child("buzzersEnabled").ref, "Y");
+    set(gameState.child("ansP").ref, null);
+    set(gameState.child("gameStatus").ref, "showQuestion");
+  };
 
   return (
     <div className="hostContainer">
@@ -134,13 +166,7 @@ export default function Host(props: IHostProps) {
                 <div
                   key={p + "row"}
                   className="_hostPlayerRow"
-                  onClick={() =>
-                    setAnswering(
-                      gameState?.child("ansP").ref,
-                      gameState?.child("gameStatus").ref,
-                      p
-                    )
-                  }
+                  onClick={() => setAnswering(gameState, p)}
                 >
                   <div key={p}>{p}</div>
                   <div key={p + "buzz"}>{processedBuzz?.rank || ""}</div>
@@ -168,6 +194,10 @@ export default function Host(props: IHostProps) {
             <Button
               caption="Reveal Answer"
               onClick={() => changeGameState("showAnswer")}
+            />
+            <Button
+              caption="Let new answers"
+              onClick={() => allowNewBuzzes()}
             />
           </div>
           <div className="_questionDiv">

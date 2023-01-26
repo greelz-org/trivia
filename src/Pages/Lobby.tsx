@@ -9,16 +9,16 @@ interface LobbyProps {
   name: string;
 }
 
-export function getPlayers(gameData: DataSnapshot | undefined) {
+export function getList(gameData: DataSnapshot | undefined, node: string) {
   let players: string[] = [];
-  gameData?.child("/players").forEach((c) => {
+  gameData?.child(`/${node}`).forEach((c) => {
     players.push(c.val());
   });
   return players;
 }
 
 export default function Lobby(props: LobbyProps) {
-  const players = getPlayers(props.gameData);
+  const players = getList(props.gameData, "players");
 
   return (
     <div className="container">

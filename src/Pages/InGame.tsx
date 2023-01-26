@@ -3,7 +3,7 @@ import BuzzComponent from "../Components/BuzzComponent";
 import DivWithFilledText from "../Components/DivWithFilledTextComponent";
 import InGamePlayersList from "../Components/InGamePlayersList";
 import QuestionComponent from "../Components/QuestionComponent";
-import { getPlayers } from "./Lobby";
+import { getList } from "./Lobby";
 
 interface InGameProps {
   gameId: string;
@@ -30,13 +30,16 @@ export default function InGame(props: InGameProps) {
   const question = gameState.child("question").val();
   const personAnswering = gameState.child("ansP").val();
   const answer = gameState.child("answer").val();
-  const canBuzz = gameState.child("buzzersEnabled").val() === "Y";
+  const hasBuzzedNames = getList(gameState, "hasBuzzedIn");
+  const canBuzz =
+    gameState.child("buzzersEnabled").val() === "Y" &&
+    !hasBuzzedNames.includes(props.playerName);
   const paText =
     personAnswering === props.playerName
       ? "Nice buzz! Answer the question out loud!"
       : `Listen up! ${personAnswering} is answering!`;
 
-  const players = getPlayers(props.gameData);
+  const players = getList(props.gameData, "players");
   let buzzers: string[] = [];
   gameState.child("buzzers").forEach((ds) => {
     if (ds.key) {
