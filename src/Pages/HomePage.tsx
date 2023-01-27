@@ -1,7 +1,7 @@
 import Button from "../Components/ButtonComponent";
 import DivWithFilledText from "../Components/DivWithFilledTextComponent";
 import { database } from "../Hooks/FirebaseApp";
-import { ref, push, set } from "firebase/database";
+import { ref, push, set, get } from "firebase/database";
 import TitleTextAndGoComponent from "../Components/TitleTextAndGoComponent";
 
 export interface IGameInfo {
@@ -31,10 +31,34 @@ export default function HomePage({
 
   const tryJoinGame = (gameId: string) => {
     if (!checkName()) return;
+    // Here we want to check to make sure that the user isn't in the game first
+    // Ideally this is a query that looks for the players name, but for now
+    // Just get the list of players in a game and see if <name> is in there.
     gameId = gameId.toUpperCase();
-    if (gameId !== "") {
-      onJoinGame(gameId);
-    }
+    const playersRef = ref(database, `games/${gameId}/players/`);
+
+    get(playersRef).then((snapshot) => {
+      let nameExists: boolean = false;
+      const players:Object = snapshot.val();
+      console.log(players);
+
+      Object.entries(players).every(([, playerName]) => {
+        if(playerName === name){
+          nameExists = true;
+          console.log(`${name} is already in the game`);
+          return false;
+        }
+        return true;
+      });
+      if (!nameExists){
+        if (gameId !== "") {
+          onJoinGame(gameId);
+        }
+      }
+      else {
+        alert(`Someone named ${name} is already in the game, try entering with a different name.`);
+      }      
+    } )
   };
 
   const tryCreateNewGame = async () => {
