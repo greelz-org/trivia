@@ -111,7 +111,8 @@ button {
   font-size: xx-large;
   width: calc(100% - 20px);
   text-align: center;
-  background-color: transparent;
+  background-color: rgba(200, 123, 139, 0.7);
+  fill-opacity: 30%;
   color: white;
 }
 @media (max-height: 300px) {
