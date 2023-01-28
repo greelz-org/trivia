@@ -143,14 +143,14 @@ export default function Host(props: IHostProps) {
     [gameState, answer, question, toggleBuzzers]
   );
 
-  const allowNewBuzzes = () => {
+  const allowNewBuzzes = useCallback(() => {
     if (!gameState) return;
     toggleBuzzers(false);
     set(gameState.child("question").ref, question);
     set(gameState.child("buzzersEnabled").ref, "Y");
     set(gameState.child("ansP").ref, null);
     set(gameState.child("gameStatus").ref, "showQuestion");
-  };
+  }, [toggleBuzzers, gameState, question]);
 
   return (
     <div className="hostContainer">

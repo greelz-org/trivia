@@ -1,0 +1,46 @@
+.jeopardyBoard {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.board {
+  display: flex;
+  max-width: 100%;
+  flex-direction: row;
+
+  .jeopardyCategory {
+    width: 20%;
+    color: white;
+
+    > * {
+      aspect-ratio: 2/1;
+      background-color: blue;
+      border: 3px solid black;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .jeopardyQuestionValue {
+      padding: 10px;
+      color: gold;
+      &::before {
+        content: "$";
+      }
+    }
+  }
+}
+
+.jeopardyFullScreenQuestion {
+  background-color: blue;
+  color: white;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}

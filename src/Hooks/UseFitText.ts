@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, Ref } from "react";
 
 export function useFitText(text: string): [string, Ref<any>] {
   const MIN_FONT_SIZE = 20;
-  const MAX_FONT_SIZE = 1000;
+  const MAX_FONT_SIZE = 300;
   const RESOLUTION = 5;
 
   const ref = useRef<any>(null);
@@ -12,12 +12,12 @@ export function useFitText(text: string): [string, Ref<any>] {
   const [fontSizeMin, setFontSizeMin] = useState(MIN_FONT_SIZE);
 
   function handleWindowResize(e: any) {
-    setTimeout(() => {
+    return setTimeout(() => {
       setFontSize(MAX_FONT_SIZE);
       setFontSizePrevious(MIN_FONT_SIZE);
       setFontSizeMax(MAX_FONT_SIZE);
       setFontSizeMin(MIN_FONT_SIZE);
-    }, 0);
+    }, 30);
   }
 
   useEffect(() => {
