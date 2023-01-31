@@ -1,35 +1,25 @@
-$topPadding: 30;
-$bottomPadding: 80;
-$playerListHeight: 40;
+$topPadding: 0;
+$bottomPadding: 30;
 
 .top {
-  height: calc(50% - #{$topPadding * 2}px - #{$playerListHeight / 2}px);
+  height: calc(50% - #{$topPadding * 2}px);
   padding: #{$topPadding}px;
+  background-color: blue;
 }
 
-.number {
-  height: 60px;
-  color: white;
+.buzzDiv {
+  width: 50%;
   display: flex;
-  justify-content: center;
   align-items: center;
-  text-align: center;
-  font-size: 30px;
-}
-
-.question {
-  height: calc(100% - 60px);
-  display: flex;
   justify-content: center;
-  align-items: center;
-  text-align: center;
-  overflow: auto;
-  word-break: break-word;
-  color: white;
+  flex: 1;
 }
 
 .buzzContainer {
-  height: 100%;
+  aspect-ratio: 1/1;
+  max-height: 50%;
+  border-radius: 50%;
+  padding: #{$bottomPadding}px;
   color: white;
   text-align: center;
   display: flex;
@@ -42,12 +32,14 @@ $playerListHeight: 40;
 }
 
 .notBuzzable {
-  background-color: rgba(10, 10, 10, .3);
+  background-color: rgba(10, 10, 10, 0.3);
 }
 
-.bottom {
+.inGameBottomDiv {
+  display: flex;
+  flex-direction: row;
+  height: calc(50% - #{$bottomPadding * 2}px);
   padding: #{$bottomPadding}px;
-  height: calc(50% - #{$bottomPadding * 2}px - #{$playerListHeight / 2}px);
 }
 
 .center {
@@ -58,13 +50,4 @@ $playerListHeight: 40;
   font-size: 100px;
   text-align: center;
   color: white;
-}
-
-.questionAnswer {
-  height: calc(100% - #{$playerListHeight}px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  font-size: 40px;
 }

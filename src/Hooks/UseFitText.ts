@@ -48,7 +48,7 @@ export function useFitText(text: string): [string, Ref<any>] {
         // e.g., add 5 to font, font-size=85, scrollbar
         // e.g., jump back down to 80, now there's still a scrollbar
         // so, we'll adjust the resolution distance down if we overflow so that we ensure no overflow & still have resolution
-        const finalVal = fontSize - RESOLUTION;
+        const finalVal = fontSize - RESOLUTION * 2;
         setFontSizeMin(finalVal);
         setFontSize(finalVal);
         setFontSizeMax(finalVal);

@@ -1,10 +1,11 @@
-import { ref, set } from "firebase/database";
+import { DataSnapshot, push, ref, set } from "firebase/database";
 import { useObject } from "react-firebase-hooks/database";
 import MistakeComponent from "../Components/MistakeComponent";
 import { database } from "../Hooks/FirebaseApp";
+import { IJeopardyBoard } from "../Interfaces/Jeopardy";
 import Host from "./Host";
 import InGame from "./InGame";
-import Lobby from "./Lobby";
+import Lobby, { getMap } from "./Lobby";
 import Results from "./Results";
 
 interface GameProps {
@@ -12,12 +13,25 @@ interface GameProps {
   name: string;
 }
 
+function uploadToDatabase(
+  x: IJeopardyBoard,
+  gameData: DataSnapshot | undefined
+) {
+  if (!gameData) return;
+  const ref = gameData.child("questions").ref;
+
+  x.categories.forEach((category) => {
+    push(ref, category);
+  });
+}
+
 export default function Game(props: GameProps) {
   const [game, loading, error] = useObject(
     ref(database, `games/${props.gameId}`)
   );
 
-  const isHost = game?.child("gameState/host").val() === props.name;
+  const hostName = game?.child("gameState/host").val();
+  const isHost = hostName === props.name;
 
   async function startGame() {
     // Set up the game information
@@ -51,7 +65,14 @@ export default function Game(props: GameProps) {
     ingame: isHost ? (
       <Host gameId={props.gameId} gameData={game} name={props.name} />
     ) : (
-      <InGame gameId={props.gameId} gameData={game} playerName={props.name} />
+      <InGame
+        gameId={props.gameId}
+        gameData={game}
+        playerName={props.name}
+        isHost={isHost}
+        hostName={hostName}
+        
+      />
     ),
     gameover: <Results results={[]} />,
     mistake: <MistakeComponent />,

@@ -1,7 +1,9 @@
 .inGamePlayersListDiv {
-    height: 40px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: baseline;
+  align-content: flex-start;
+  flex-wrap: wrap;
 }

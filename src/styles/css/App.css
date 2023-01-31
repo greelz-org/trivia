@@ -10,13 +10,11 @@ html,
   width: 100%;
   padding: 0;
   margin: 0;
-  background: url("https://th.bing.com/th/id/R.804ae154ec944f0c6adf75d053e1e4f5?rik=pOCnx%2b7lqMU6dQ&riu=http%3a%2f%2fgetwallpapers.com%2fwallpaper%2ffull%2fc%2f5%2f5%2f1113372-gorgerous-cool-space-background-wallpapers-2880x1800-phone.jpg&ehk=iDdv1rf0FUnRBLeVQoCHTnbDKWpmK%2faURtu2WkTJt0E%3d&risl=&pid=ImgRaw&r=0");
-  background-size: cover;
+  background: #fefefe;
 }
 
 #root {
   height: 100%;
-  background-color: black;
 }
 
 input[type=text] {
@@ -83,10 +81,10 @@ button {
   display: inline-block;
   text-align: center;
   align-items: flex-start;
-  cursor: default;
   box-sizing: border-box;
   margin: 0em;
   border: none;
+  cursor: pointer;
 }
 
 .topTextContainer {
@@ -155,33 +153,24 @@ button {
 }
 
 .top {
-  height: calc(50% - 60px - 20px);
-  padding: 30px;
+  height: calc(50% - 0px);
+  padding: 0px;
+  background-color: blue;
 }
 
-.number {
-  height: 60px;
-  color: white;
+.buzzDiv {
+  width: 50%;
   display: flex;
-  justify-content: center;
   align-items: center;
-  text-align: center;
-  font-size: 30px;
-}
-
-.question {
-  height: calc(100% - 60px);
-  display: flex;
   justify-content: center;
-  align-items: center;
-  text-align: center;
-  overflow: auto;
-  word-break: break-word;
-  color: white;
+  flex: 1;
 }
 
 .buzzContainer {
-  height: 100%;
+  aspect-ratio: 1/1;
+  max-height: 50%;
+  border-radius: 50%;
+  padding: 30px;
   color: white;
   text-align: center;
   display: flex;
@@ -197,9 +186,11 @@ button {
   background-color: rgba(10, 10, 10, 0.3);
 }
 
-.bottom {
-  padding: 80px;
-  height: calc(50% - 160px - 20px);
+.inGameBottomDiv {
+  display: flex;
+  flex-direction: row;
+  height: calc(50% - 60px);
+  padding: 30px;
 }
 
 .center {
@@ -210,15 +201,6 @@ button {
   font-size: 100px;
   text-align: center;
   color: white;
-}
-
-.questionAnswer {
-  height: calc(100% - 40px);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: white;
-  font-size: 40px;
 }
 
 .gameIdDiv {
@@ -284,15 +266,12 @@ button {
 }
 
 .playerCircleDiv {
-  aspect-ratio: 1/1;
-  border-radius: 50%;
-  border: 2px solid white;
-  box-shadow: 0 0 10px black;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: rgba(0, 0, 0, 0.5);
   color: white;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  aspect-ratio: 1/1;
+  justify-content: center;
 }
 
 .highlight {
@@ -300,11 +279,13 @@ button {
 }
 
 .inGamePlayersListDiv {
-  height: 40px;
-  overflow: hidden;
   display: flex;
+  flex: 1;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: flex-end;
+  align-items: baseline;
+  align-content: flex-start;
+  flex-wrap: wrap;
 }
 
 .hostContainer {
@@ -394,18 +375,24 @@ button {
   width: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  overflow-x: auto;
 }
 
 .board {
+  max-height: 100%;
   display: flex;
-  max-width: 100%;
   flex-direction: row;
 }
 .board .jeopardyCategory {
-  width: 20%;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100%;
   color: white;
 }
 .board .jeopardyCategory > * {
+  min-height: 30px;
   aspect-ratio: 2/1;
   background-color: blue;
   border: 3px solid black;
@@ -413,6 +400,7 @@ button {
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  flex: 1;
 }
 .board .jeopardyCategory .jeopardyQuestionValue {
   padding: 10px;
@@ -428,7 +416,9 @@ button {
   height: 100%;
   width: 100%;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   text-align: center;
+  position: static;
 }/*# sourceMappingURL=App.css.map */

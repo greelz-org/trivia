@@ -3,6 +3,7 @@ import React from "react";
 interface PlayerCircleComponentProps {
   name: string;
   buzzedIn: boolean;
+  points: number;
 }
 
 function getInitials(name: string | undefined) {
@@ -20,7 +21,8 @@ export default function PlayerCircleComponent(
 ) {
   return (
     <div className={`playerCircleDiv ${props.buzzedIn ? "highlight" : ""}`}>
-      {getInitials(props.name)}
+      {/* {getInitials(props.name)} - {} */}
+      {`${props.name}: ${props.points}`}
     </div>
   );
 }

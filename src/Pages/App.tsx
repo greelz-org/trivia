@@ -4,9 +4,6 @@ import HomePage, { IGameInfo } from "./HomePage";
 import Game from "./Game";
 import { push, ref, set } from "firebase/database";
 import { database } from "../Hooks/FirebaseApp";
-import JeopardyBoard from "../Components/JeopardyBoard";
-import { useObject } from "react-firebase-hooks/database";
-import IJeopardyGame, { IJeopardyCategory } from "../Interfaces/IJeopardyGame";
 
 function App() {
   const [gameId, setGameId] = useState("");
@@ -20,9 +17,11 @@ function App() {
   const onCreateNewGame = (gameInfo: IGameInfo) => {
     console.log("creating a new game...");
     setGameId(gameInfo.gameId);
-    set(ref(database, `games/${gameInfo.gameId}`), {
+    const reference = ref(database, `games/${gameInfo.gameId}`);
+    set(reference, {
       status: "lobby",
     });
+
     addUserToGame(gameInfo.gameId);
   };
 
@@ -36,9 +35,9 @@ function App() {
         onCreateNewGame={(gameInfo) => {
           onCreateNewGame(gameInfo);
         }}
-        onJoinGame={async (gameId) => {
+        onJoinGame={async (gameId, exists) => {
           setGameId(gameId);
-          addUserToGame(gameId);
+          if (!exists) addUserToGame(gameId);
         }}
       />
     );

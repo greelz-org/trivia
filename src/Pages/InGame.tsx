@@ -1,58 +1,21 @@
-import { DatabaseReference, DataSnapshot, set } from "firebase/database";
+import { DatabaseReference, DataSnapshot, push, set } from "firebase/database";
 import BuzzComponent from "../Components/BuzzComponent";
 import DivWithFilledText from "../Components/DivWithFilledTextComponent";
 import InGamePlayersList from "../Components/InGamePlayersList";
 import JeopardyBoard from "../Components/JeopardyBoard";
-import QuestionComponent from "../Components/QuestionComponent";
-import IJeopardyGame, {
-  IJeopardyBoard,
-  IJeopardyCategory,
-  IJeopardyQuestion,
-} from "../Interfaces/IJeopardyGame";
-import { getList } from "./Lobby";
+import { getJeopardyGame, IJeopardyQuestion } from "../Interfaces/Jeopardy";
+import { getList, getMap } from "./Lobby";
 
 interface InGameProps {
   gameId: string;
   playerName: string;
   gameData: DataSnapshot | undefined;
-  isHost?: boolean;
+  isHost: boolean;
+  hostName: string;
 }
 
 function buzzIn(ref: DatabaseReference) {
   if (ref) set(ref, Date.now());
-}
-
-function getJeopardyGame(
-  gameData: DataSnapshot | undefined
-): IJeopardyGame | undefined {
-  if (!gameData) return;
-  let categories: IJeopardyCategory[] = [];
-
-  // Todo: questionData - rename?
-  // const questionData: IJeopardyBoard = new Map(
-  //   Object.entries(gameData.child("questions").val())
-  // );
-
-  type x = {
-    categoryTitle: string;
-    questions: Map<string, IJeopardyQuestion>;
-  };
-
-  Object.values<x>(gameData.child("questions").val()).forEach((x: x) => {
-    let newQuestions: IJeopardyQuestion[] = [];
-    categories.push({
-      title: x.categoryTitle,
-      questions: newQuestions,
-    });
-    Object.values(x.questions).forEach((q: IJeopardyQuestion) => {
-      newQuestions.push(q);
-    });
-  });
-
-  return {
-    title: "Matt's game",
-    board: { categories: categories, isDoubleJeopardy: false },
-  };
 }
 
 export default function InGame(props: InGameProps) {
@@ -66,10 +29,11 @@ export default function InGame(props: InGameProps) {
     | "showAnswer"
     | "nextQuestion";
   const gameStatus: gameStatusType = gameState.child("/gameStatus").val();
-  const questionNumber = gameState.child("numQ").val();
-  const question = gameState.child("question").val();
   const personAnswering = gameState.child("ansP").val();
-  const answer = gameState.child("answer").val();
+  const answer: string = gameState.child("answer").val();
+  const question: IJeopardyQuestion | undefined = gameState
+    .child("question")
+    .val();
   const hasBuzzedNames = getList(gameState, "hasBuzzedIn");
   const canBuzz =
     gameState.child("buzzersEnabled").val() === "Y" &&
@@ -80,6 +44,10 @@ export default function InGame(props: InGameProps) {
       : `Listen up! ${personAnswering} is answering!`;
 
   const players = getList(props.gameData, "players");
+  players.splice(players.indexOf(props.hostName), 1);
+  const playersPoints = getMap(props.gameData, "points");
+  const askedQuestions = getList(props.gameData, "gameState/askedQuestions");
+
   let buzzers: string[] = [];
   gameState.child("buzzers").forEach((ds) => {
     if (ds.key) {
@@ -87,57 +55,33 @@ export default function InGame(props: InGameProps) {
     }
   });
 
-  // function getJeopardyGame(): IJeopardyGame {
-  //   return {
-  //     board: {
-  //       categories: [
-  //         getJeopardyCategory(
-  //           "here's an answer",
-  //           "Why is writing code so hard but so easy?",
-  //           "Fun category"
-  //         ),
-  //         getJeopardyCategory(
-  //           "chickens",
-  //           "what's the worlds smallest animal?",
-  //           "animals"
-  //         ),
-  //         getJeopardyCategory(
-  //           "525600",
-  //           "how many miles till i get to you?",
-  //           "music"
-  //         ),
-  //         getJeopardyCategory(
-  //           "another answer",
-  //           "when you ask a question out loud, who doesn't hear it if they aren't listening?",
-  //           "philosophy"
-  //         ),
-  //         getJeopardyCategory(
-  //           "random longer answer here",
-  //           "What kind of math works with the pythagorean theorem?",
-  //           "SCIENCE"
-  //         ),
-  //       ],
-  //       isDoubleJeopardy: false,
-  //     },
-  //     title: "Here's a title.",
-  //   };
-  // }
-
   return (
     <>
-      <InGamePlayersList players={players} buzzers={buzzers} />
       {gameStatus === "showQuestion" && (
         <>
           <div className="top">
-            <JeopardyBoard game={jGame} />
+            <JeopardyBoard
+              askedQuestions={askedQuestions}
+              game={jGame}
+              selectedQuestion={question ? question : undefined}
+              playerViewMode
+            />
           </div>
+
           {/* "bottom" component in CSS */}
-          <BuzzComponent
-            canBuzzIn={canBuzz}
-            buzzClickHandler={() =>
-              buzzIn(gameState.child(`/buzzers/${props.playerName}`).ref)
-            }
-          />
+          <div className="inGameBottomDiv">
+            <BuzzComponent
+              canBuzzIn={canBuzz}
+              buzzClickHandler={() =>
+                buzzIn(gameState.child(`/buzzers/${props.playerName}`).ref)
+              }
+            />
+            <InGamePlayersList
+              players={players}
+              buzzers={buzzers}
+              points={playersPoints}
+            />
+          </div>
         </>
       )}
       {gameStatus === "answering" && (

@@ -26,13 +26,11 @@ export default function BuzzComponent(props: BuzzComponentProps) {
   };
 
   return (
-    <>
-      <div
-        className={`bottom ${actuallyCanBuzz ? "buzzable" : "notBuzzable"}`}
-        onClick={(e) => clickHandler(e)}
-      >
-        <DivWithFilledText className={`buzzContainer`} text="Buzz in!" />
-      </div>
-    </>
+    <div
+      className={`buzzDiv`}
+      onClick={(e) => clickHandler(e)}
+    >
+      <DivWithFilledText className={`${actuallyCanBuzz ? "buzzable" : "notBuzzable"} buzzContainer`} text="Buzz in!" />
+    </div>
   );
 }

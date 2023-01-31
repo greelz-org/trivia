@@ -9,6 +9,13 @@ interface LobbyProps {
   name: string;
 }
 
+export function getMap(gameData: DataSnapshot | undefined, node: string) {
+  if (!gameData) return;
+  const nodeVal = gameData.child(`${node}`)?.val();
+  if (!nodeVal) return;
+  return new Map<string, number>(Object.entries(nodeVal));
+}
+
 export function getList(gameData: DataSnapshot | undefined, node: string) {
   let players: string[] = [];
   gameData?.child(`/${node}`).forEach((c) => {

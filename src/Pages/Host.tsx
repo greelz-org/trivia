@@ -1,13 +1,14 @@
-import { DatabaseReference, DataSnapshot, set } from "firebase/database";
-import {
-  ChangeEvent,
-  ChangeEventHandler,
-  useCallback,
-  useMemo,
-  useState,
-} from "react";
+import { DataSnapshot, increment, push, set } from "firebase/database";
+import { ChangeEvent, useCallback, useMemo, useRef } from "react";
 import Button from "../Components/ButtonComponent";
-import { getList } from "./Lobby";
+import JeopardyBoard from "../Components/JeopardyBoard";
+import IJeopardyGame, {
+  getJeopardyGame,
+  IJeopardyBoard,
+  IJeopardyQuestion,
+  parseTsv,
+} from "../Interfaces/Jeopardy";
+import { getList, getMap } from "./Lobby";
 
 interface IHostProps {
   gameData: DataSnapshot | undefined;
@@ -71,37 +72,55 @@ async function setAnswering(
 
   const ansPRef = gameState.child("ansP").ref;
   const gameStatusRef = gameState.child("gameStatus").ref;
-  const hasBuzzedInRef = gameState.child(`hasBuzzedIn/${pers}`).ref;
+  const hasBuzzedInRef = gameState.child(`hasBuzzedIn`).ref;
 
-  set(ansPRef, pers);
-  set(gameStatusRef, "answering");
-  set(hasBuzzedInRef, "");
+  await set(ansPRef, pers);
+  await set(gameStatusRef, "answering");
+  await push(hasBuzzedInRef, pers);
 }
 
 export default function Host(props: IHostProps) {
-  const players = getList(props.gameData, "players");
-  const gameState = props.gameData?.child("gameState");
+  function setSelectedQuestion(
+    q?: IJeopardyQuestion,
+    cIdx?: number,
+    qIdx?: number
+  ) {
+    console.log("here");
+    if (!gameState) return;
+    set(gameState?.child("question")?.ref, q ?? null);
+
+    if (cIdx != null && qIdx != null) markQuestionAsAsked(cIdx, qIdx);
+
+    reset();
+  }
+
+  const gameData = props.gameData;
+  const players = getList(gameData, "players");
+  const playersPoints = getMap(gameData, "points");
+  const gameState = gameData?.child("gameState");
   const buzzData = gameState?.child("buzzers");
   const buzzStateValues = useMemo(() => calcBuzzerState(buzzData), [buzzData]);
   const buzzersEnabled = gameState?.child("buzzersEnabled").val() === "Y";
   const answerer = gameState?.child("ansP").val();
-  const [question, setQuestion] = useState("");
-  const [answer, setAnswer] = useState("");
+  const askedQuestions = getList(gameData, "gameState/askedQuestions");
+  console.log(askedQuestions);
+  const question: IJeopardyQuestion = gameState?.child("question").val();
+  const jGame: IJeopardyGame | undefined = getJeopardyGame(gameData);
 
-  const [pendingBuzzCheck, setPendingBuzzCheck] = useState(false);
+  const pendingBuzzCheck = useRef<boolean>(false);
 
   const shouldPickBuzzer =
     answerer == null &&
     buzzStateValues != null &&
     buzzStateValues.buzzResults.length > 0;
 
-  if (shouldPickBuzzer && !pendingBuzzCheck) {
-    setPendingBuzzCheck(true);
-    setTimeout(() => {
+  if (shouldPickBuzzer && !pendingBuzzCheck.current) {
+    pendingBuzzCheck.current = true;
+    setTimeout(async () => {
       if (gameState) {
-        setAnswering(gameState, buzzStateValues.buzzResults[0].name);
+        await setAnswering(gameState, buzzStateValues.buzzResults[0].name);
       }
-      setPendingBuzzCheck(false);
+      pendingBuzzCheck.current = false;
     }, 500);
   }
 
@@ -113,35 +132,15 @@ export default function Host(props: IHostProps) {
     [gameState]
   );
 
-  const changeGameState = useCallback(
-    async (state: "showQuestion" | "showAnswer" | "answering") => {
-      if (!gameState) return;
-
-      let isValid = false;
-      if (state === "showQuestion") {
-        // Validate there's a question in the box to show
-        isValid = question != null && question.length > 0;
-        if (isValid) {
-          // set the question status
-          toggleBuzzers(false);
-          set(gameState.child("question").ref, question);
-          set(gameState.child("buzzers").ref, null);
-          set(gameState.child("hasBuzzedIn").ref, null);
-          set(gameState.child("ansP").ref, null);
-        }
-      } else if (state === "showAnswer") {
-        // Validate there's a question in the box to show
-        isValid = answer != null && answer.length > 0;
-        if (isValid) set(gameState.child("answer").ref, answer);
-      }
-
-      // Always change the core gameStatus
-      if (isValid) {
-        set(gameState.child("gameStatus").ref, state);
-      }
-    },
-    [gameState, answer, question, toggleBuzzers]
-  );
+  const reset = useCallback(() => {
+    if (gameState) {
+      set(gameState.child("hasBuzzedIn").ref, null);
+      set(gameState.child("buzzersEnabled").ref, "N");
+      set(gameState.child("ansP").ref, null);
+      set(gameState.child("buzzers").ref, null);
+      set(gameState.child("gameStatus").ref, "showQuestion");
+    }
+  }, [gameState]);
 
   const allowNewBuzzes = useCallback(() => {
     if (!gameState) return;
@@ -150,17 +149,45 @@ export default function Host(props: IHostProps) {
     set(gameState.child("buzzersEnabled").ref, "Y");
     set(gameState.child("ansP").ref, null);
     set(gameState.child("gameStatus").ref, "showQuestion");
+    set(gameState.child("buzzers").ref, null);
   }, [toggleBuzzers, gameState, question]);
+
+  const markQuestionAsAsked = (cIdx: number, qIdx: number) => {
+    if (gameState) {
+      push(gameState.child("askedQuestions").ref, cIdx + "," + qIdx);
+    }
+  };
+
+  const markQuestionCorrect = useCallback(
+    (wasCorrect: boolean): void => {
+      if (gameData) {
+        set(
+          gameData.child(`points/${answerer}`).ref,
+          increment(wasCorrect ? question.value : -question.value)
+        );
+      }
+      if (wasCorrect) {
+        // Give the player the points, and reset the state of the game
+        reset();
+        if (gameData) set(gameData.child("gameState/question").ref, null);
+      } else {
+        // they got it wrong
+        allowNewBuzzes();
+      }
+    },
+    [gameData, answerer, question, reset, allowNewBuzzes]
+  );
 
   return (
     <div className="hostContainer">
-      <div className="_hostTop">Welcome to the Host Panel.</div>
+      <div className="_hostTop">{`Welcome to the Host Panel - ${props.gameId}`}</div>
       <div className="_hostBottom">
         <div className="playersGrid">
           {players.map((p) => {
             const processedBuzz = buzzStateValues?.buzzResults.find(
               (a) => a.name === p
             );
+
             return (
               <>
                 <div
@@ -169,6 +196,7 @@ export default function Host(props: IHostProps) {
                   onClick={() => setAnswering(gameState, p)}
                 >
                   <div key={p}>{p}</div>
+                  <div key={p + "pts"}>{playersPoints?.get(p) ?? 0}</div>
                   <div key={p + "buzz"}>{processedBuzz?.rank || ""}</div>
                   <div key={p + "buzzDiff"}>
                     {formatTimeDiff(
@@ -183,43 +211,45 @@ export default function Host(props: IHostProps) {
         </div>
         <div className="controlGrid">
           <div className="_controlButtons">
-            <Button
-              caption="Show Question"
-              onClick={() => changeGameState("showQuestion")}
-            />
-            <Button
-              caption={`${buzzersEnabled ? "Disable" : "Enable"} Buzzers`}
-              onClick={() => toggleBuzzers(!buzzersEnabled)}
-            />
-            <Button
-              caption="Reveal Answer"
-              onClick={() => changeGameState("showAnswer")}
-            />
-            <Button
-              caption="Let new answers"
-              onClick={() => allowNewBuzzes()}
-            />
+            {question && (
+              <Button
+                caption={`${buzzersEnabled ? "Disable" : "Enable"} Buzzers`}
+                onClick={() => toggleBuzzers(!buzzersEnabled)}
+              />
+            )}
+            {answerer && (
+              <>
+                <Button
+                  caption="Correct"
+                  onClick={() => markQuestionCorrect(true)}
+                />
+                <Button
+                  caption="Wrong"
+                  onClick={() => markQuestionCorrect(false)}
+                />
+              </>
+            )}
           </div>
-          <div className="_questionDiv">
-            <textarea
-              className="_textarea"
-              autoComplete="off"
-              placeholder="question"
-              value={question}
-              onChange={(e: any) => setQuestion(e.target.value)}
-            />
-          </div>
-          <div className="_answerDiv">
-            <input
-              type="text"
-              className="_answerInput"
-              placeholder="answer"
-              value={answer}
-              onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                setAnswer(e.target.value);
-              }}
-            />
-          </div>
+          <JeopardyBoard
+            askedQuestions={askedQuestions}
+            game={jGame}
+            selectedQuestion={question}
+            setSelectedQuestion={(q, cIdx, qIdx) =>
+              setSelectedQuestion(q, cIdx, qIdx)
+            }
+            onFileChange={async (e: ChangeEvent<HTMLInputElement>) => {
+              if (!gameData || !e.target.files) return;
+              const file = e.target.files[0];
+              const text = await file.text();
+              // Tab-delimited file that looks like the template
+              const board: IJeopardyBoard = parseTsv(text);
+              set(gameData?.child("jeopardyGame").ref, {
+                title: "Matt's test",
+                author: "Greeley",
+                board: board,
+              });
+            }}
+          />
         </div>
       </div>
     </div>

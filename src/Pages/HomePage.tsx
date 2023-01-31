@@ -12,7 +12,7 @@ interface HomePageProps {
   name: string;
   onSetName: (name: string) => void;
   onCreateNewGame: (i: IGameInfo) => void;
-  onJoinGame: (gameId: string) => void;
+  onJoinGame: (gameId: string, exists?: boolean) => void;
 }
 
 export default function HomePage({
@@ -39,26 +39,25 @@ export default function HomePage({
 
     get(playersRef).then((snapshot) => {
       let nameExists: boolean = false;
-      const players:Object = snapshot.val();
-      console.log(players);
+      const players: Object = snapshot.val();
 
       Object.entries(players).every(([, playerName]) => {
-        if(playerName === name){
+        if (playerName === name) {
           nameExists = true;
           console.log(`${name} is already in the game`);
           return false;
         }
         return true;
       });
-      if (!nameExists){
+      if (!nameExists) {
         if (gameId !== "") {
           onJoinGame(gameId);
         }
+      } else {
+        onJoinGame(gameId, true);
+        // alert(`Someone named ${name} is already in the game, try entering with a different name.`);
       }
-      else {
-        alert(`Someone named ${name} is already in the game, try entering with a different name.`);
-      }      
-    } )
+    });
   };
 
   const tryCreateNewGame = async () => {
