@@ -10,7 +10,8 @@ html,
   width: 100%;
   padding: 0;
   margin: 0;
-  background: #fefefe;
+  background: #3C252A;
+  background-image: linear-gradient(to bottom right, #3C252A, #5B5C96);
 }
 
 #root {
@@ -109,7 +110,7 @@ button {
   font-size: xx-large;
   width: calc(100% - 20px);
   text-align: center;
-  background-color: rgba(200, 123, 139, 0.7);
+  background-color: rgba(131, 148, 204, 0.4);
   fill-opacity: 30%;
   color: white;
 }
