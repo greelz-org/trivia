@@ -10,7 +10,7 @@ function App() {
   const [name, setName] = useState("");
 
   const addUserToGame = async (gameId: string) => {
-    console.log("adding a user to a game...");
+    console.log("Adding a user to a game...");
     return push(ref(database, `games/${gameId}/players`), name);
   };
 
