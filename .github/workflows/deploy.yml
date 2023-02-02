@@ -7,15 +7,15 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      -name: Deploy React App
-      uses: appleboy/ssh-action@v0.1.2
-      with:
-        host: ${{secrets.SSH_HOST}} #ip of the server we ssh into
-        key: ${{secrets.SSH_KEY}} #private key of the server 
-        username: ${{secrets.SSH_USERNAME}} # user on the server we are sshing into
+      - name: Deploy React App
+        uses: appleboy/ssh-action@v0.1.2
+        with:
+          host: ${{secrets.SSH_HOST}} #ip of the server we ssh into
+          key: ${{secrets.SSH_KEY}} #private key of the server 
+          username: ${{secrets.SSH_USERNAME}} # user on the server we are sshing into
         
-        script: |
-          mkdir test
-          cd test
-          git clone https://github.com/greelz/trivia.git
-          echo 'Deployment successful to digital ocean'
+          script: |
+            mkdir test
+            cd test
+            git clone https://github.com/greelz/trivia.git
+            echo 'Deployment successful to digital ocean'
