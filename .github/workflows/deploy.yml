@@ -19,4 +19,5 @@ jobs:
             cd /home
             rm -rf trivia
             git clone https://github.com/greelz/trivia.git
+            npm run build
             echo 'Deployment successful to digital ocean'
