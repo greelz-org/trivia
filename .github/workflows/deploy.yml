@@ -19,7 +19,7 @@ jobs:
           script: |
             cd /home
             rm -rf trivia
-            git clone https://github.com/greelz/trivia.git
+            git clone https://github.com/greelz-org/trivia.git
             cd trivia
             npm install 
             npm run build
