@@ -14,11 +14,13 @@ jobs:
           key: ${{secrets.SSH_KEY}} #private key of the server 
           username: ${{secrets.SSH_USERNAME}} # user on the server we are sshing into
           passphrase: ${{secrets.SSH_PASSPHRASE}} # ssh key passphrase
-        
+          # This script is inefficient because we are just re-installing every commit. That's very bad, but for now I just want to get this working
+          # We can figure it out later
           script: |
             cd /home
             rm -rf trivia
             git clone https://github.com/greelz/trivia.git
             cd trivia
+            npm install 
             npm run build
             echo 'Deployment successful to digital ocean'
