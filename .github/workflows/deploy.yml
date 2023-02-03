@@ -16,7 +16,7 @@ jobs:
           passphrase: ${{secrets.SSH_PASSPHRASE}} # ssh key passphrase
         
           script: |
-            mkdir test
-            cd test
+            cd home
+            rm -rf trivia
             git clone https://github.com/greelz/trivia.git
             echo 'Deployment successful to digital ocean'
