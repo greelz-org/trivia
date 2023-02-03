@@ -23,7 +23,7 @@ export default function HomePage({
 }: HomePageProps) {
   const checkName = () => {
     if (name === "") {
-      alert("Enter your name first, please.");
+      alert("Enter your name first");
       return false;
     }
     return true;
