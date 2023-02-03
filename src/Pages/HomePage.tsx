@@ -82,7 +82,7 @@ export default function HomePage({
     <div className="container">
       <div className="topTextContainer">
         <DivWithFilledText maxHeight="50%" text="Trivia!" />
-        <div>A place where fun and smarts collide! <br> HI SPENCER! </br></div>
+        <div>A place where fun and smarts collide!</div>
       </div>
       <div className="actionsContainer">
         <div className="nameEntry">
