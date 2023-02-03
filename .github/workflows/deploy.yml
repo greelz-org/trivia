@@ -23,4 +23,5 @@ jobs:
             cd trivia
             npm install 
             npm run build
+            cp -r build/* /var/www/trivia/html
             echo 'Deployment successful to digital ocean'
