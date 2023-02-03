@@ -15,7 +15,7 @@ function App() {
   };
 
   const onCreateNewGame = (gameInfo: IGameInfo) => {
-    console.log("creating a new game...");
+    console.log("Creating a new game...");
     setGameId(gameInfo.gameId);
     const reference = ref(database, `games/${gameInfo.gameId}`);
     set(reference, {
