@@ -114,11 +114,6 @@ button {
   fill-opacity: 30%;
   color: white;
 }
-@media (max-height: 300px) {
-  .actionsContainer .buttonsContainer {
-    flex-direction: row;
-  }
-}
 .actionsContainer .buttonsContainer {
   flex: 1;
   display: flex;
@@ -194,14 +189,14 @@ button {
   padding: 30px;
 }
 
-.center {
+.niceBuzzDiv {
   display: flex;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-  font-size: 100px;
-  text-align: center;
+  flex-direction: row;
+  height: calc(50% - 60px);
+  padding: 30px;
   color: white;
+  text-align: center;
+  justify-content: center;
 }
 
 .gameIdDiv {
@@ -339,6 +334,10 @@ button {
 }
 ._hostPlayerRow:hover {
   background-color: darkblue;
+}
+
+._highlightPlayer {
+  background-image: linear-gradient(to bottom right, #3c252a, #5b5c96);
 }
 
 .controlGrid {

@@ -42,12 +42,12 @@ $bottomPadding: 30;
   padding: #{$bottomPadding}px;
 }
 
-.center {
+.niceBuzzDiv {
   display: flex;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-  font-size: 100px;
-  text-align: center;
+  flex-direction: row;
+  height: calc(50% - #{$bottomPadding * 2}px);
+  padding: #{$bottomPadding}px;
   color: white;
+  text-align: center;
+  justify-content: center;
 }

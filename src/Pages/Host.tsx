@@ -101,11 +101,12 @@ export default function Host(props: IHostProps) {
   const buzzData = gameState?.child("buzzers");
   const buzzStateValues = useMemo(() => calcBuzzerState(buzzData), [buzzData]);
   const buzzersEnabled = gameState?.child("buzzersEnabled").val() === "Y";
-  const answerer = gameState?.child("ansP").val();
+  const answerer: string | undefined = gameState?.child("ansP").val();
   const askedQuestions = getList(gameData, "gameState/askedQuestions");
-  console.log(askedQuestions);
   const question: IJeopardyQuestion = gameState?.child("question").val();
   const jGame: IJeopardyGame | undefined = getJeopardyGame(gameData);
+  const showDailyDoubleOverride =
+    gameState?.child("showDailyDouble").val() === "Y";
 
   const pendingBuzzCheck = useRef<boolean>(false);
 
@@ -137,6 +138,7 @@ export default function Host(props: IHostProps) {
       set(gameState.child("hasBuzzedIn").ref, null);
       set(gameState.child("buzzersEnabled").ref, "N");
       set(gameState.child("ansP").ref, null);
+      set(gameState.child("showDailyDouble").ref, null);
       set(gameState.child("buzzers").ref, null);
       set(gameState.child("gameStatus").ref, "showQuestion");
     }
@@ -152,11 +154,20 @@ export default function Host(props: IHostProps) {
     set(gameState.child("buzzers").ref, null);
   }, [toggleBuzzers, gameState, question]);
 
-  const markQuestionAsAsked = (cIdx: number, qIdx: number) => {
+  const markQuestionAsAsked = useCallback(
+    (cIdx: number, qIdx: number) => {
+      if (gameState) {
+        push(gameState.child("askedQuestions").ref, cIdx + "," + qIdx);
+      }
+    },
+    [gameState]
+  );
+
+  const showDailyDouble = useCallback(() => {
     if (gameState) {
-      push(gameState.child("askedQuestions").ref, cIdx + "," + qIdx);
+      set(gameState.child("showDailyDouble").ref, "Y");
     }
-  };
+  }, [gameState]);
 
   const markQuestionCorrect = useCallback(
     (wasCorrect: boolean): void => {
@@ -192,7 +203,9 @@ export default function Host(props: IHostProps) {
               <>
                 <div
                   key={p + "row"}
-                  className="_hostPlayerRow"
+                  className={`_hostPlayerRow ${
+                    answerer === p ? "_highlightPlayer" : ""
+                  }`}
                   onClick={() => setAnswering(gameState, p)}
                 >
                   <div key={p}>{p}</div>
@@ -211,11 +224,27 @@ export default function Host(props: IHostProps) {
         </div>
         <div className="controlGrid">
           <div className="_controlButtons">
-            {question && (
+            {question && !question.isDailyDouble && (
               <Button
                 caption={`${buzzersEnabled ? "Disable" : "Enable"} Buzzers`}
                 onClick={() => toggleBuzzers(!buzzersEnabled)}
               />
+            )}
+            {question && question.isDailyDouble && (
+              <>
+                {showDailyDoubleOverride ? (
+                  <>
+                    {answerer ? null : (
+                      <h2>Click answering person's name on the left!</h2>
+                    )}
+                  </>
+                ) : (
+                  <Button
+                    caption="Reveal DD"
+                    onClick={() => showDailyDouble()}
+                  />
+                )}
+              </>
             )}
             {answerer && (
               <>
@@ -232,6 +261,7 @@ export default function Host(props: IHostProps) {
           </div>
           <JeopardyBoard
             askedQuestions={askedQuestions}
+            showDailyDouble={showDailyDoubleOverride}
             game={jGame}
             selectedQuestion={question}
             setSelectedQuestion={(q, cIdx, qIdx) =>

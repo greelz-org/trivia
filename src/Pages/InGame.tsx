@@ -47,6 +47,8 @@ export default function InGame(props: InGameProps) {
   players.splice(players.indexOf(props.hostName), 1);
   const playersPoints = getMap(props.gameData, "points");
   const askedQuestions = getList(props.gameData, "gameState/askedQuestions");
+  const showDailyDoubleOverride =
+    gameState?.child("showDailyDouble").val() === "Y";
 
   let buzzers: string[] = [];
   gameState.child("buzzers").forEach((ds) => {
@@ -57,18 +59,18 @@ export default function InGame(props: InGameProps) {
 
   return (
     <>
-      {gameStatus === "showQuestion" && (
-        <>
-          <div className="top">
-            <JeopardyBoard
-              askedQuestions={askedQuestions}
-              game={jGame}
-              selectedQuestion={question ? question : undefined}
-              playerViewMode
-            />
-          </div>
+      <>
+        <div className="top">
+          <JeopardyBoard
+            showDailyDouble={showDailyDoubleOverride}
+            askedQuestions={askedQuestions}
+            game={jGame}
+            selectedQuestion={question ? question : undefined}
+            playerViewMode
+          />
+        </div>
 
-          {/* "bottom" component in CSS */}
+        {gameStatus === "showQuestion" && (
           <div className="inGameBottomDiv">
             <BuzzComponent
               canBuzzIn={canBuzz}
@@ -82,25 +84,13 @@ export default function InGame(props: InGameProps) {
               points={playersPoints}
             />
           </div>
-        </>
-      )}
-      {gameStatus === "answering" && (
-        <div className="center">
-          <DivWithFilledText text={paText} maxHeight="30%" maxWidth="80%" />
-        </div>
-      )}
-      {gameStatus === "showAnswer" && (
-        <>
-          <div className="questionAnswer">The answer is... {answer}</div>
-        </>
-      )}
-      {gameStatus === "nextQuestion" && (
-        <>
-          <div className="nextQuestion">
-            Everyone ready for the next question?
+        )}
+        {gameStatus === "answering" && (
+          <div className="niceBuzzDiv">
+            <DivWithFilledText text={paText} />
           </div>
-        </>
-      )}
+        )}
+      </>
     </>
   );
 }

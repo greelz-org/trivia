@@ -5,8 +5,8 @@ import DivWithFilledText from "./DivWithFilledTextComponent";
 interface IJeopardyBoardProps {
   game: IJeopardyGame | undefined;
   askedQuestions: string[] | undefined;
-  overrideQuestion?: string;
   playerViewMode?: boolean;
+  showDailyDouble?: boolean;
   selectedQuestion?: IJeopardyQuestion;
   setSelectedQuestion?: (
     q?: IJeopardyQuestion,
@@ -35,14 +35,17 @@ export default function JeopardyBoard(props: IJeopardyBoardProps) {
   const {
     selectedQuestion,
     setSelectedQuestion,
-    overrideQuestion,
     playerViewMode,
-    askedQuestions
+    askedQuestions,
+    showDailyDouble,
   } = props;
+
+  const showDailyDoubleTextOnly =
+    selectedQuestion?.isDailyDouble && !showDailyDouble;
 
   return (
     <>
-      {(selectedQuestion || overrideQuestion) && (
+      {selectedQuestion && (
         <>
           {!playerViewMode && (
             <div
@@ -55,16 +58,21 @@ export default function JeopardyBoard(props: IJeopardyBoardProps) {
             </div>
           )}
           <div className="jeopardyFullScreenQuestion">
-            {selectedQuestion?.isDailyDouble && <div>DAILY DOUBLE!!</div>}
-            <DivWithFilledText
-              text={
-                selectedQuestion ? selectedQuestion.prompt : overrideQuestion!
-              }
-              maxHeight="70%"
-              maxWidth="70%"
-            />
-            {!playerViewMode && (
-              <div className="jeopardyAnswer">{selectedQuestion?.answer}</div>
+            {showDailyDoubleTextOnly ? (
+              <div>DAILY DOUBLE!!</div>
+            ) : (
+              <>
+                <DivWithFilledText
+                  text={selectedQuestion ? selectedQuestion.prompt : ""!}
+                  maxHeight="70%"
+                  maxWidth="70%"
+                />
+                {!playerViewMode && (
+                  <div className="jeopardyAnswer">
+                    {selectedQuestion?.answer}
+                  </div>
+                )}
+              </>
             )}
           </div>
         </>
