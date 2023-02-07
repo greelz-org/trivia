@@ -23,67 +23,69 @@
 }
 
 .playersGrid {
-    min-width: 250px;
-    flex: 0 0 20%;
-    background-color: blue;
-    flex-direction: column;
-    display: flex;
-    color: white;
+  min-width: 250px;
+  flex: 0 0 20%;
+  background-color: blue;
+  flex-direction: column;
+  display: flex;
+  color: white;
 }
 
 ._hostPlayerRow {
-    cursor: pointer;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid black;
+
+  > * {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding: 10px;
-    border-bottom: 1px solid black;
+    flex: 0 0 30px;
+  }
 
-    > * {
-        display: flex;
-        flex: 0 0 30px;
-    }
+  :first-child {
+    flex: 2;
+  }
 
-    :first-child {
-        flex: 2;
-    }
-
-    &:hover {
-        background-color: darkblue;
-    }
-
+  &:hover {
+    background-color: darkblue;
+  }
 }
 
+._highlightPlayer {
+  background-image: linear-gradient(to bottom right, #3c252a, #5b5c96);
+}
 
 .controlGrid {
-    padding: 10px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    background-color: red;
+  padding: 10px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: red;
 
-    ._controlButtons {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-evenly;
-    }
+  ._controlButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
 }
 
 ._questionDiv {
-    margin: 20px 0;
+  margin: 20px 0;
 
-    ._textarea {
-        height: 100px;
-        width: 100%;
-    }
+  ._textarea {
+    height: 100px;
+    width: 100%;
+  }
 }
 
 ._answerDiv {
-    width: 100%;
-    height: 80px;
+  width: 100%;
+  height: 80px;
 
-    ._answerInput {
-        width: 50ch;
-        font-size: large;
-    }
+  ._answerInput {
+    width: 50ch;
+    font-size: large;
+  }
 }

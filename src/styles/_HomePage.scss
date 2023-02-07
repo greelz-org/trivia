@@ -27,13 +27,6 @@
   }
 
 
-  @media (max-height: 300px) {
-    .buttonsContainer {
-        flex-direction: row;
-    }
-    
-  }
-
   .buttonsContainer {
     flex: 1;
     display: flex;
