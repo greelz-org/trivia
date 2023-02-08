@@ -1,7 +1,8 @@
 import { DataSnapshot, increment, push, set } from "firebase/database";
-import { ChangeEvent, useCallback, useMemo, useRef } from "react";
+import { ChangeEvent, useCallback, useMemo, useRef, useState } from "react";
 import Button from "../Components/ButtonComponent";
 import JeopardyBoard from "../Components/JeopardyBoard";
+import PlayerRowHostMode from "../Components/PlayerRowHostMode";
 import IJeopardyGame, {
   getJeopardyGame,
   IJeopardyBoard,
@@ -16,7 +17,7 @@ interface IHostProps {
   gameId: string;
 }
 
-interface IBuzzResults {
+export interface IBuzzResults {
   name: string;
   buzzEpoch: number;
   rank?: number;
@@ -189,6 +190,8 @@ export default function Host(props: IHostProps) {
     [gameData, answerer, question, reset, allowNewBuzzes]
   );
 
+  const [changingScore, setChangingScore] = useState<string[]>([]);
+
   return (
     <div className="hostContainer">
       <div className="_hostTop">{`Welcome to the Host Panel - ${props.gameId}`}</div>
@@ -198,27 +201,28 @@ export default function Host(props: IHostProps) {
             const processedBuzz = buzzStateValues?.buzzResults.find(
               (a) => a.name === p
             );
-
             return (
-              <>
-                <div
-                  key={p + "row"}
-                  className={`_hostPlayerRow ${
-                    answerer === p ? "_highlightPlayer" : ""
-                  }`}
-                  onClick={() => setAnswering(gameState, p)}
-                >
-                  <div key={p}>{p}</div>
-                  <div key={p + "pts"}>{playersPoints?.get(p) ?? 0}</div>
-                  <div key={p + "buzz"}>{processedBuzz?.rank || ""}</div>
-                  <div key={p + "buzzDiff"}>
-                    {formatTimeDiff(
-                      processedBuzz?.buzzEpoch,
-                      buzzStateValues!.fastestBuzz
-                    )}
-                  </div>
-                </div>
-              </>
+              <PlayerRowHostMode
+                processedBuzz={processedBuzz}
+                name={p}
+                score={playersPoints?.get(p)}
+                isAnswering={answerer === p}
+                onClickRow={() => setAnswering(gameState, p)}
+                timeDifference={formatTimeDiff(
+                  processedBuzz?.buzzEpoch,
+                  buzzStateValues!.fastestBuzz
+                )}
+                onChangeScore={(newScore) => {
+                  if (gameData) {
+                    set(gameData.child(`points/${p}`).ref, newScore);
+                  }
+                }}
+                changingScore={changingScore.includes(p)}
+                onClickPoints={() => setChangingScore((curr) => [...curr, p])}
+                onClickStopPoints={() =>
+                  setChangingScore((curr) => curr.filter((x) => x !== p))
+                }
+              />
             );
           })}
         </div>

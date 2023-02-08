@@ -11,7 +11,7 @@ html,
   padding: 0;
   margin: 0;
   background: #3C252A;
-  background-image: linear-gradient(to bottom right, #3C252A, #5B5C96);
+  background-image: linear-gradient(to bottom right, #FF0088, #FFF600);
 }
 
 #root {
@@ -317,6 +317,11 @@ button {
   color: white;
 }
 
+.scoreChangeInput {
+  width: 20px;
+  display: flex;
+}
+
 ._hostPlayerRow {
   cursor: pointer;
   display: flex;
@@ -328,6 +333,7 @@ button {
 ._hostPlayerRow > * {
   display: flex;
   flex: 0 0 30px;
+  margin: 0 4px 0 0;
 }
 ._hostPlayerRow :first-child {
   flex: 2;
@@ -337,7 +343,7 @@ button {
 }
 
 ._highlightPlayer {
-  background-image: linear-gradient(to bottom right, #3c252a, #5b5c96);
+  background-image: linear-gradient(to bottom right, #FF0088, #00FF76);
 }
 
 .controlGrid {

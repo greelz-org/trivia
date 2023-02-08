@@ -31,6 +31,11 @@
   color: white;
 }
 
+.scoreChangeInput {
+  width: 20px;
+  display: flex;
+}
+
 ._hostPlayerRow {
   cursor: pointer;
   display: flex;
@@ -42,6 +47,7 @@
   > * {
     display: flex;
     flex: 0 0 30px;
+    margin: 0 4px 0 0;
   }
 
   :first-child {
@@ -54,7 +60,7 @@
 }
 
 ._highlightPlayer {
-  background-image: linear-gradient(to bottom right, #3c252a, #5b5c96);
+  background-image: linear-gradient(to bottom right, #FF0088, #00FF76); 
 }
 
 .controlGrid {
