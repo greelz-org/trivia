@@ -1,5 +1,6 @@
 import { ChangeEvent } from "react";
 import IJeopardyGame, { IJeopardyQuestion } from "../Interfaces/Jeopardy";
+import Button from "./ButtonComponent";
 import DivWithFilledText from "./DivWithFilledTextComponent";
 
 interface IJeopardyBoardProps {
@@ -47,17 +48,16 @@ export default function JeopardyBoard(props: IJeopardyBoardProps) {
     <>
       {selectedQuestion && (
         <>
-          {!playerViewMode && (
-            <div
-              className="goBack"
-              onClick={
-                setSelectedQuestion ? () => setSelectedQuestion() : () => null
-              }
-            >
-              Show Board
-            </div>
-          )}
           <div className="jeopardyFullScreenQuestion">
+            {!playerViewMode && (
+              <Button
+                onClick={
+                  setSelectedQuestion ? () => setSelectedQuestion() : () => null
+                }
+                caption={"Back to board"}
+                containerClassName='backToBoardContainer'
+              />
+            )}
             {showDailyDoubleTextOnly ? (
               <div>DAILY DOUBLE!!</div>
             ) : (

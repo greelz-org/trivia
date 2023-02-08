@@ -235,20 +235,7 @@ export default function Host(props: IHostProps) {
               />
             )}
             {question && question.isDailyDouble && (
-              <>
-                {showDailyDoubleOverride ? (
-                  <>
-                    {answerer ? null : (
-                      <h2>Click answering person's name on the left!</h2>
-                    )}
-                  </>
-                ) : (
-                  <Button
-                    caption="Reveal DD"
-                    onClick={() => showDailyDouble()}
-                  />
-                )}
-              </>
+              <Button caption="Reveal DD" onClick={() => showDailyDouble()} />
             )}
             {answerer && (
               <>

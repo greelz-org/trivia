@@ -41,7 +41,14 @@
   }
 }
 
+.backToBoardContainer {
+  position: absolute;
+  top: 0; 
+  left: 0;
+}
+
 .jeopardyFullScreenQuestion {
+  position: relative;
   background-color: blue;
   color: white;
   height: 100%;
@@ -51,5 +58,4 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  position: static;
 }

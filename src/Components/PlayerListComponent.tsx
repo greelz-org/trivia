@@ -15,15 +15,15 @@ export default function PlayerListComponent(props: PlayerListComponentProps) {
           })
         : null}
       {numPlayers < 10 ? (
-        <div className="player">
+        <div key={'invite'} className="player">
           <Button caption="Invite" />
         </div>
       ) : null}
       {numPlayers < 9
         ? Array(9 - numPlayers)
             .fill(null)
-            .map(() => {
-              return <div className="player"></div>;
+            .map((_, idx) => {
+              return <div key={`b${idx}`} className="player"></div>;
             })
         : null}
     </div>

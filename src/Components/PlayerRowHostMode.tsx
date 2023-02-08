@@ -50,7 +50,7 @@ export default function PlayerRowHostMode(props: IPlayerRowHostModeProps) {
               }}
               placeholder={score?.toString()}
             ></input>
-            <div onClick={() => onClickStopPoints()}>Save</div>
+            <div key={`stop${name}`} onClick={() => onClickStopPoints()}>Save</div>
           </>
         ) : (
           <div key={name + "pts"} onClick={() => onClickPoints()}>
