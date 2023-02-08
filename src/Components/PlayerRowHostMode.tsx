@@ -33,13 +33,14 @@ export default function PlayerRowHostMode(props: IPlayerRowHostModeProps) {
       <div
         key={name + "row"}
         className={`_hostPlayerRow ${isAnswering ? "_highlightPlayer" : ""}`}
-        onClick={() => onClickRow()}
       >
-        <div key={name}>{name}</div>
+        <div key={name} onClick={() => onClickRow()}>
+          {name}
+        </div>
         {changingScore ? (
           <>
             <input
-            className="scoreChangeInput"
+              className="scoreChangeInput"
               key={name + "pts"}
               onChange={(e: ChangeEvent<HTMLInputElement>) => {
                 if (!isNaN(+e.target.value)) {
