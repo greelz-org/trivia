@@ -1,4 +1,5 @@
 import { useState } from "react";
+import ClickableButton from "./ClickableButton";
 import DivWithFilledText from "./DivWithFilledTextComponent";
 
 interface BuzzComponentProps {
@@ -11,7 +12,7 @@ export default function BuzzComponent(props: BuzzComponentProps) {
   const lockedOut = timeoutLocks > 0;
   const actuallyCanBuzz = props.canBuzzIn && !lockedOut;
 
-  const clickHandler = (e: React.MouseEvent<HTMLDivElement>) => {
+  const clickHandler = () => {
     if (props.canBuzzIn && !lockedOut) {
       // Submit buzz to the server
       props.buzzClickHandler();
@@ -26,11 +27,12 @@ export default function BuzzComponent(props: BuzzComponentProps) {
   };
 
   return (
-    <div
-      className={`buzzDiv`}
-      onClick={(e) => clickHandler(e)}
-    >
-      <DivWithFilledText className={`${actuallyCanBuzz ? "buzzable" : "notBuzzable"} buzzContainer`} text="Buzz in!" />
+    <div className="buzzContainer">
+      <ClickableButton
+        className="_buzzButton"
+        onClick={() => clickHandler()}
+        text={"Buzz In"}
+      />
     </div>
   );
 }

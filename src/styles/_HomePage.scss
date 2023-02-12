@@ -10,45 +10,30 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+  width: 100%;
 
   .nameEntry {
     flex: 0 0 15%;
     text-align: center;
     min-height: 60px;
-
-    input {
-      font-size: xx-large;
-      width: calc(100% - 20px);
-      text-align: center;
-      background-color: rgb(131, 148, 204, 0.4);
-      fill-opacity: 30%;
-      color: white;
-    }
+    display: flex;
+    flex-direction: column;
   }
-
 
   .buttonsContainer {
     flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-evenly;
     text-align: center;
-
-    .buttonTextDiv {
-      span {
-        font-size: smaller;
-        display: block;
-      }
-    }
+    width: 80%;
+    justify-content: space-around;
   }
 
-  .titleTextGoDiv {
-    flex: 1;
-
-    :last-child() {
-      display: inline-block;
-    }
+  .inputAndButtonDiv {
+    display: flex;
+    font-size: x-large;
+    flex: 1 1;
   }
 
   .buttonTextDiv {
@@ -66,6 +51,37 @@
   }
 }
 
-.bigButton {
-  font-size: x-large;
+#codeInput {
+  width: 8ch;
+  height: 58px;
+}
+
+.fancyInput {
+  padding: 0 3px;
+  font-size: 49px;
+  width: 11ch;
+  overflow: hidden;
+  text-align: center;
+  background-color: rgb(131, 148, 204, 0.4);
+  fill-opacity: 30%;
+  color: white;
+  border: none;
+  box-shadow: 0 0 10px black;
+}
+
+.faArrowIcon {
+  box-shadow: 0 0 10px black;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.joinGameComponent {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  width: 100%;
+}
+
+.titleTextAndGoDiv {
+  align-self: center;
 }

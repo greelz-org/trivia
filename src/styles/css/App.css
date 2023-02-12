@@ -10,17 +10,16 @@ html,
   width: 100%;
   padding: 0;
   margin: 0;
-  background: #3C252A;
-  background-image: linear-gradient(to bottom right, #FF0088, #FFF600);
+  background: #3c252a;
+  background-image: linear-gradient(to bottom right, #ff0088, #fff600);
 }
 
 #root {
   height: 100%;
 }
 
-input[type=text] {
-  -ms-writing-mode: lr-tb !important;
-      writing-mode: horizontal-tb !important;
+input {
+  writing-mode: horizontal-tb !important;
   text-rendering: auto;
   color: fieldtext;
   letter-spacing: normal;
@@ -70,8 +69,7 @@ button {
   -webkit-appearance: auto;
      -moz-appearance: auto;
           appearance: auto;
-  -ms-writing-mode: lr-tb !important;
-      writing-mode: horizontal-tb !important;
+  writing-mode: horizontal-tb !important;
   text-rendering: auto;
   letter-spacing: normal;
   word-spacing: normal;
@@ -88,6 +86,28 @@ button {
   cursor: pointer;
 }
 
+._clickableButton {
+  all: unset;
+  border: 2px solid blue;
+  border-radius: 0.5em;
+  padding: 1em 2em;
+  box-shadow: 0 6px 0 0 blue;
+  position: relative;
+  max-width: 50ch;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+._clickableButton ._faIcon {
+  margin-right: 1em;
+}
+._clickableButton:active {
+  box-shadow: none;
+  top: 6px;
+}
+._clickableButton:hover {
+  background-color: rgba(0, 0, 255, 0.18);
+}
+
 .topTextContainer {
   flex: 0 1 25%;
   display: flex;
@@ -100,37 +120,28 @@ button {
   flex: 1;
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 .actionsContainer .nameEntry {
   flex: 0 0 15%;
   text-align: center;
   min-height: 60px;
-}
-.actionsContainer .nameEntry input {
-  font-size: xx-large;
-  width: calc(100% - 20px);
-  text-align: center;
-  background-color: rgba(131, 148, 204, 0.4);
-  fill-opacity: 30%;
-  color: white;
+  display: flex;
+  flex-direction: column;
 }
 .actionsContainer .buttonsContainer {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-evenly;
   text-align: center;
+  width: 80%;
+  justify-content: space-around;
 }
-.actionsContainer .buttonsContainer .buttonTextDiv span {
-  font-size: smaller;
-  display: block;
-}
-.actionsContainer .titleTextGoDiv {
-  flex: 1;
-}
-.actionsContainer .titleTextGoDiv :last-child() {
-  display: inline-block;
+.actionsContainer .inputAndButtonDiv {
+  display: flex;
+  font-size: x-large;
+  flex: 1 1;
 }
 .actionsContainer .buttonTextDiv {
   flex: 1;
@@ -144,34 +155,45 @@ button {
   font-size: smaller;
 }
 
-.bigButton {
-  font-size: x-large;
+#codeInput {
+  width: 8ch;
+  height: 58px;
+}
+
+.fancyInput {
+  padding: 0 3px;
+  font-size: 49px;
+  width: 11ch;
+  overflow: hidden;
+  text-align: center;
+  background-color: rgba(131, 148, 204, 0.4);
+  fill-opacity: 30%;
+  color: white;
+  border: none;
+  box-shadow: 0 0 10px black;
+}
+
+.faArrowIcon {
+  box-shadow: 0 0 10px black;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.joinGameComponent {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  width: 100%;
+}
+
+.titleTextAndGoDiv {
+  align-self: center;
 }
 
 .top {
   height: calc(50% - 0px);
   padding: 0px;
   background-color: blue;
-}
-
-.buzzDiv {
-  width: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
-}
-
-.buzzContainer {
-  aspect-ratio: 1/1;
-  max-height: 50%;
-  border-radius: 50%;
-  padding: 30px;
-  color: white;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .buzzable {
@@ -182,11 +204,28 @@ button {
   background-color: rgba(10, 10, 10, 0.3);
 }
 
+._buzzButton {
+  border-radius: 50%;
+  aspect-ratio: 1/1;
+  width: 120px;
+  text-align: center;
+  box-shadow: 0 6px 0 0 black;
+  border-color: black;
+  color: white;
+}
+._buzzButton:active, ._buzzButton:hover {
+  background-color: transparent;
+}
+
 .inGameBottomDiv {
   display: flex;
   flex-direction: row;
   height: calc(50% - 60px);
   padding: 30px;
+  max-width: 800px;
+  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
 }
 
 .niceBuzzDiv {

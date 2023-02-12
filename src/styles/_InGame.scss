@@ -7,26 +7,6 @@ $bottomPadding: 30;
   background-color: blue;
 }
 
-.buzzDiv {
-  width: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
-}
-
-.buzzContainer {
-  aspect-ratio: 1/1;
-  max-height: 50%;
-  border-radius: 50%;
-  padding: #{$bottomPadding}px;
-  color: white;
-  text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .buzzable {
   background-color: aquamarine;
 }
@@ -35,11 +15,29 @@ $bottomPadding: 30;
   background-color: rgba(10, 10, 10, 0.3);
 }
 
+._buzzButton {
+  border-radius: 50%;
+  aspect-ratio: 1/1;
+  width: 120px;
+  text-align: center;
+  box-shadow: 0 6px 0 0 black;
+  border-color: black;
+  color: white;
+
+  &:active, &:hover {
+    background-color: transparent;
+  }
+}
+
 .inGameBottomDiv {
   display: flex;
   flex-direction: row;
   height: calc(50% - #{$bottomPadding * 2}px);
   padding: #{$bottomPadding}px;
+  max-width: 800px;
+  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
 }
 
 .niceBuzzDiv {

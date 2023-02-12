@@ -10,15 +10,15 @@ html,
   width: 100%;
   padding: 0;
   margin: 0;
-  background: #3C252A;
-  background-image: linear-gradient(to bottom right, #FF0088, #FFF600)
+  background: #3c252a;
+  background-image: linear-gradient(to bottom right, #ff0088, #fff600);
 }
 
 #root {
   height: 100%;
 }
 
-input[type="text"] {
+input {
   writing-mode: horizontal-tb !important;
   text-rendering: auto;
   color: fieldtext;
@@ -81,3 +81,29 @@ button {
   border: none;
   cursor: pointer;
 }
+
+._clickableButton {
+  all: unset;
+  border: 2px solid blue;
+  border-radius: .5em;
+  padding: 1em 2em;
+  box-shadow: 0 6px 0 0 blue;
+  position: relative;
+  max-width: 50ch;
+  cursor: pointer;
+  margin-bottom: 10px;
+
+  ._faIcon {
+    margin-right: 1em;
+  }
+
+  &:active {
+    box-shadow: none;
+    top: 6px;
+  }
+
+  &:hover {
+    background-color: rgba(0, 0, 255, 0.18);
+  }
+}
+

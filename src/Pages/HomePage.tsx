@@ -2,7 +2,15 @@ import Button from "../Components/ButtonComponent";
 import DivWithFilledText from "../Components/DivWithFilledTextComponent";
 import { database } from "../Hooks/FirebaseApp";
 import { ref, push, set, get } from "firebase/database";
-import TitleTextAndGoComponent from "../Components/TitleTextAndGoComponent";
+import JoinGameComponent from "../Components/JoinGameComponent";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faFootball,
+  faLightbulb,
+  faPersonWalkingLuggage,
+} from "@fortawesome/free-solid-svg-icons";
+import ClickableButton from "../Components/ClickableButton";
+import { useState } from "react";
 
 export interface IGameInfo {
   gameId: string;
@@ -21,6 +29,13 @@ export default function HomePage({
   onCreateNewGame,
   onJoinGame,
 }: HomePageProps) {
+  const [isJoiningGame, setIsJoiningGame] = useState(false);
+
+  const trySetIsJoiningGame = () => {
+    if (!checkName()) return;
+    setIsJoiningGame(true);
+  };
+
   const checkName = () => {
     if (name === "") {
       alert("Enter your name first");
@@ -82,29 +97,43 @@ export default function HomePage({
     <div className="container">
       <div className="topTextContainer">
         <DivWithFilledText maxHeight="50%" text="Trivia!" />
-        <div>A place where fun and smarts collide! Hi Spencer :)</div>
+        <p>A place where fun and smarts collide!</p>
       </div>
       <div className="actionsContainer">
         <div className="nameEntry">
           <label htmlFor="name">Name: </label>
           <input
+            autoComplete="off"
+            spellCheck={false}
             type="text"
             id="name"
             onChange={(e) => onSetName(e.target.value)}
             value={name}
+            className="fancyInput"
           ></input>
         </div>
         <div className="buttonsContainer">
-          <Button
-            buttonClassName="bigButton"
-            containerClassName="buttonTextDiv"
-            caption="New Game"
-            onClick={() => tryCreateNewGame()}
-          />
-          <TitleTextAndGoComponent
-            title="Join Game"
-            onClick={(gameCode) => tryJoinGame(gameCode)}
-          />
+          {isJoiningGame ? (
+            <JoinGameComponent
+              onClickBack={() => setIsJoiningGame(false)}
+              onClickGo={(code) => tryJoinGame(code)}
+            />
+          ) : (
+            <>
+              <ClickableButton
+                icon={faPersonWalkingLuggage}
+                text="Join a game"
+                onClick={() => trySetIsJoiningGame()}
+                scaleFactor={3}
+              />
+              <ClickableButton
+                icon={faLightbulb}
+                scaleFactor={3}
+                text="Create a game"
+                onClick={() => tryCreateNewGame()}
+              />
+            </>
+          )}
         </div>
       </div>
     </div>
