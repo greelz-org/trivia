@@ -197,7 +197,7 @@ button {
 }
 
 .buzzable {
-  background-color: aquamarine;
+  background-color: aquamarine !important;
 }
 
 .notBuzzable {
@@ -221,11 +221,12 @@ button {
   display: flex;
   flex-direction: row;
   height: calc(50% - 60px);
-  padding: 30px;
+  padding: 30px 10px;
   max-width: 800px;
   margin: 0 auto;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
+  overflow-y: auto;
 }
 
 .niceBuzzDiv {
@@ -302,11 +303,14 @@ button {
 
 .playerCircleDiv {
   color: white;
-  padding: 10px;
+  padding: 5px 10px;
   display: flex;
   align-items: center;
-  aspect-ratio: 1/1;
   justify-content: center;
+  border: 1px solid black;
+  box-shadow: 0 1px 0 black;
+  margin: 4px;
+  border-radius: 1em;
 }
 
 .highlight {
@@ -317,10 +321,8 @@ button {
   display: flex;
   flex: 1;
   flex-direction: row;
-  justify-content: flex-end;
-  align-items: baseline;
-  align-content: flex-start;
   flex-wrap: wrap;
+  justify-content: center;
 }
 
 .hostContainer {
@@ -436,6 +438,9 @@ button {
   height: 100%;
   color: white;
 }
+.board .jeopardyCategory .categoryTitle {
+  padding: 5px;
+}
 .board .jeopardyCategory > * {
   min-height: 30px;
   aspect-ratio: 2/1;
@@ -446,6 +451,8 @@ button {
   align-items: center;
   cursor: pointer;
   flex: 1;
+  min-width: 75px;
+  text-align: center;
 }
 .board .jeopardyCategory .jeopardyQuestionValue {
   padding: 10px;

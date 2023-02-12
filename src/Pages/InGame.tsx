@@ -30,7 +30,6 @@ export default function InGame(props: InGameProps) {
     | "nextQuestion";
   const gameStatus: gameStatusType = gameState.child("/gameStatus").val();
   const personAnswering = gameState.child("ansP").val();
-  const answer: string = gameState.child("answer").val();
   const question: IJeopardyQuestion | undefined = gameState
     .child("question")
     .val();

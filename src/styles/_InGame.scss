@@ -8,7 +8,7 @@ $bottomPadding: 30;
 }
 
 .buzzable {
-  background-color: aquamarine;
+  background-color: aquamarine !important;
 }
 
 .notBuzzable {
@@ -33,11 +33,12 @@ $bottomPadding: 30;
   display: flex;
   flex-direction: row;
   height: calc(50% - #{$bottomPadding * 2}px);
-  padding: #{$bottomPadding}px;
+  padding: #{$bottomPadding}px 10px;
   max-width: 800px;
   margin: 0 auto;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
+  overflow-y: auto;
 }
 
 .niceBuzzDiv {

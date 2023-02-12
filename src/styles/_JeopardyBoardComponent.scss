@@ -19,6 +19,10 @@
     height: 100%;
     color: white;
 
+    .categoryTitle {
+      padding: 5px;
+    }
+
     > * {
       min-height: 30px;
       aspect-ratio: 2/1;
@@ -29,6 +33,8 @@
       align-items: center;
       cursor: pointer;
       flex: 1;
+      min-width: 75px;
+      text-align: center;
     }
 
     .jeopardyQuestionValue {

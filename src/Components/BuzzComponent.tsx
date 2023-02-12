@@ -29,7 +29,7 @@ export default function BuzzComponent(props: BuzzComponentProps) {
   return (
     <div className="buzzContainer">
       <ClickableButton
-        className="_buzzButton"
+        className={`_buzzButton ${actuallyCanBuzz ? 'buzzable' : ''}`}
         onClick={() => clickHandler()}
         text={"Buzz In"}
       />
