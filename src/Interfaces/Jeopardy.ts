@@ -24,6 +24,10 @@ export interface IJeopardyQuestion {
   hide?: boolean;
 }
 
+function cleanString(str: string) {
+  return str.replace(/""/g, '"').replace(/^"(.*)"$/g, '$1');
+}
+
 export function parseTsv(tsv: string): IJeopardyBoard {
   let board: IJeopardyBoard = {
     isDoubleJeopardy: false,
@@ -31,19 +35,21 @@ export function parseTsv(tsv: string): IJeopardyBoard {
   };
 
   tsv.split("\n").forEach((line, idx) => {
-    if (idx !== 0) {
+    if (idx !== 0 && line) {
       const [category, prompt, answer, value, isDailyDouble] = line.split("\t");
+      if (prompt == null || answer == null || category == null) return; // ensure there's at least some data
+      const [realCat, realPrompt, realAns] = [cleanString(category), cleanString(prompt), cleanString(answer)];
       const newQuestion: IJeopardyQuestion = {
-        prompt: prompt,
-        answer: answer,
+        prompt: realPrompt,
+        answer: realAns,
         value: Number.parseInt(value),
-        isDailyDouble: isDailyDouble.includes("TRUE"),
+        isDailyDouble: isDailyDouble === "TRUE",
       };
 
-      const idx = board.categories.find((cat) => cat.title === category);
+      const idx = board.categories.find((cat) => cat.title === realCat);
       if (!idx) {
         board.categories.push({
-          title: category,
+          title: realCat,
           questions: [newQuestion],
         });
       } else {
